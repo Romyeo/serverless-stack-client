@@ -1,15 +1,21 @@
 import React from 'react';
+import { createStore, applyMiddleware, compose } from 'redux';
+import { Provider } from 'react-redux';
+import createSagaMiddleware from 'redux-saga';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Amplify from 'aws-amplify';
 
-import App from './App';
+import App from 'App';
 
-import config from './config';
+import config from 'config';
 
-import './index.css';
+import sagas from 'store/sagas';
+import reducers from 'store/reducers';
 
-import * as serviceWorker from './serviceWorker';
+import * as serviceWorker from 'serviceWorker';
+
+import 'index.css';
 
 Amplify.configure({
   Auth: {
@@ -27,16 +33,30 @@ Amplify.configure({
   API: {
     endpoints: [
       {
-        name: "notes",
+        name: 'notes',
         endpoint: config.apiGateway.URL,
         region: config.apiGateway.REGION
-      },
+      }
     ]
   }
 });
 
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const sagaMiddleware = createSagaMiddleware();
+const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware));
+const store = createStore(reducers, enhancer);
 
-ReactDOM.render(<Router><App /></Router>, document.getElementById('root'));
+sagaMiddleware.run(sagas);
+
+const app = (
+  <Provider store={store}>
+    <Router>
+      <App />
+    </Router>
+  </Provider>
+);
+
+ReactDOM.render(app, document.getElementById('root'));
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.

@@ -1,10 +1,17 @@
-import React from "react";
-import "./NotFound.css";
+import React from 'react';
+import { Row, Col } from 'react-bootstrap';
 
-export default function NotFound() {
+const NotFound = () => {
   return (
-    <div className="NotFound">
-      <h3>Sorry, page not found!</h3>
-    </div>
+    <Row>
+      <Col>
+        <div style={{ textAlign: 'center' }}>
+          <h1>404 - Not found</h1>
+          <h5>Uh oh! someone is snooping around</h5>
+        </div>
+      </Col>
+    </Row>
   );
 }
+
+export default NotFound;

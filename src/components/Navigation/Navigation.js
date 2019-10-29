@@ -1,27 +1,28 @@
-import React from 'react'
-import { Link } from "react-router-dom";
-import { Navbar, Nav } from "react-bootstrap";
-import { LinkContainer } from "react-router-bootstrap";
+import React from 'react';
+import { Link } from 'react-router-dom';
+import { Navbar, Nav } from 'react-bootstrap';
+import { LinkContainer } from 'react-router-bootstrap';
 
-const Navigation = () => {
+const Navigation = ({ routes }) => {
   return (
-    <Navbar collapseOnSelect fluid>
+    <Navbar collapseOnSelect>
       <Navbar.Brand>
         <Link to="/">Scratch</Link>
       </Navbar.Brand>
+
       <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+
       <Navbar.Collapse>
         <Nav className="ml-auto">
-          <LinkContainer to="/signup" exact>
-            <Nav.Link>Sign up</Nav.Link>
-          </LinkContainer>
-          <LinkContainer to="/login" exact>
-            <Nav.Link>Sign in</Nav.Link>
-          </LinkContainer>
+          {routes.map(route => (
+            <LinkContainer to={route.path} key={route.name} exact>
+              <Nav.Link>{route.name}</Nav.Link>
+            </LinkContainer>
+          ))}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
-  )
-}
+  );
+};
 
-export default Navigation
+export default Navigation;
