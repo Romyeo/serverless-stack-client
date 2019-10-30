@@ -1,9 +1,9 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
 import './Home.css';
 
-const Home = () => {
+const Home: FC = () => {
   return (
     <Row>
       <Col>

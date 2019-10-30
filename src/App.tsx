@@ -1,13 +1,13 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
-import * as authActions from 'store/actions/auth';
-import * as authSelectors from 'selectors/auth';
+import * as ROUTES from 'constants/routes';
 
-import Signin from 'containers/Signin/Signin';
-import Signout from 'containers/Signout/Signout';
+import * as authActions from 'store/actions/auth';
+
+import * as authSelectors from 'selectors/auth';
 
 import Home from 'components/Home/Home';
 import Navigation from 'components/Navigation/Navigation';
@@ -15,31 +15,10 @@ import NotFound from 'components/NotFound/NotFound';
 
 import './App.css';
 
-const defaultRoutes = [
-  {
-    path: '/signin',
-    component: Signin,
-    name: 'Sign in'
-  },
-  {
-    path: '/signup',
-    component: null,
-    name: 'Sign up'
-  }
-];
-
-const authenticatedRoutes = [
-  {
-    path: '/signout',
-    component: Signout,
-    name: 'Sign out'
-  }
-];
-
-const App = () => {
+const App: FC = () => {
   const dispatch = useDispatch();
   const signedIn = useSelector(authSelectors.selectAuthSignedIn);
-  const [routes, setRoutes] = useState(defaultRoutes);
+  const [routes, setRoutes] = useState(ROUTES.defaultRoutes);
 
   useEffect(() => {
     dispatch(authActions.checkAuth());
@@ -47,8 +26,8 @@ const App = () => {
 
   useEffect(() => {
     signedIn
-      ? setRoutes([...authenticatedRoutes])
-      : setRoutes([...defaultRoutes]);
+      ? setRoutes([...ROUTES.authenticatedRoutes])
+      : setRoutes([...ROUTES.defaultRoutes]);
   }, [signedIn]);
 
   return (
@@ -60,9 +39,9 @@ const App = () => {
           {routes.map(route => (
             <Route
               path={route.path}
-              exact
               component={route.component}
               key={route.name}
+              exact
             />
           ))}
           <Route component={NotFound} />

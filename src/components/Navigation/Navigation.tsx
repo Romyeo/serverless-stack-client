@@ -1,9 +1,11 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Link } from 'react-router-dom';
 import { Navbar, Nav } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const Navigation = ({ routes }) => {
+import IProps from 'interfaces/props/navigation';
+
+const Navigation: FC<IProps> = ({ routes }) => {
   return (
     <Navbar collapseOnSelect>
       <Navbar.Brand>

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { FC } from 'react';
 import { Row, Col } from 'react-bootstrap';
 
-const NotFound = () => {
+const NotFound: FC = () => {
   return (
     <Row>
       <Col>
@@ -12,6 +12,6 @@ const NotFound = () => {
       </Col>
     </Row>
   );
-}
+};
 
 export default NotFound;
