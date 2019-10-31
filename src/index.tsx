@@ -1,7 +1,8 @@
 import React from 'react';
-import { createStore, applyMiddleware, compose } from 'redux';
+import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
 import createSagaMiddleware from 'redux-saga';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import ReactDOM from 'react-dom';
 import { BrowserRouter as Router } from 'react-router-dom';
 import Amplify from 'aws-amplify';
@@ -41,9 +42,8 @@ Amplify.configure({
   }
 });
 
-const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const sagaMiddleware = createSagaMiddleware();
-const enhancer = composeEnhancers(applyMiddleware(sagaMiddleware));
+const enhancer = composeWithDevTools(applyMiddleware(sagaMiddleware));
 const store = createStore(reducers, enhancer);
 
 sagaMiddleware.run(sagas);

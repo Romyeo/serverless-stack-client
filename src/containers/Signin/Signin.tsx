@@ -1,5 +1,6 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC, FormEvent } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { Button, Form, Alert, Row, Col } from 'react-bootstrap';
 
 import * as authActions from 'store/actions/auth';
@@ -8,7 +9,12 @@ import * as authSelectors from 'selectors/auth';
 
 import useFormFields from 'hooks/formFields';
 
-const Signin = ({ history }) => {
+interface IFormState {
+  email: string;
+  password: string;
+}
+
+const Signin: FC<RouteComponentProps> = ({ history }) => {
   const { push } = history;
 
   const dispatch = useDispatch();
@@ -16,17 +22,18 @@ const Signin = ({ history }) => {
   const signingIn = useSelector(authSelectors.selectAuthSigningIn);
   const signedIn = useSelector(authSelectors.selectAuthSignedIn);
 
-  const [fields, handleFieldChange] = useFormFields({
+  const [fields, handleFieldChange] = useFormFields<IFormState>({
     email: '',
     password: ''
   });
+
   const { password, email } = fields;
 
   useEffect(() => {
     if (signedIn) push('/');
   }, [signedIn, push]);
 
-  const handleSubmit = event => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     dispatch(authActions.signInAuth(email, password));
   };

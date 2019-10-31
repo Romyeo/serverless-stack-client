@@ -1,11 +1,12 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, FC } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
+import { RouteComponentProps } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
 
 import * as authActions from 'store/actions/auth';
 import * as authSelectors from 'selectors/auth';
 
-const Signout = ({ history }) => {
+const Signout: FC<RouteComponentProps> = ({ history }) => {
   const { push } = history;
 
   const dispatch = useDispatch();

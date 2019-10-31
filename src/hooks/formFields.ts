@@ -1,11 +1,13 @@
-import { useState } from 'react';
+import { useState, ChangeEvent } from 'react';
 
-const useFormFields = initState => {
+const useFormFields = <S>(
+  initState: S
+): [S, (event: ChangeEvent<HTMLInputElement>) => void] => {
   const [fields, setValues] = useState(initState);
 
   return [
     fields,
-    event => {
+    (event: ChangeEvent<HTMLInputElement>) => {
       setValues({
         ...fields,
         [event.target.name]: event.target.value
