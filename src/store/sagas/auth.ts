@@ -1,9 +1,32 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 
-import * as authServices from 'services/auth';
+import { activate, check, signIn, signOut, signUp } from 'services/auth';
 
-import * as authActionTypes from 'store/types/auth';
-import * as authActions from 'store/actions/auth';
+import {
+  ACTIVATE_AUTH,
+  CHECK_AUTH,
+  SIGN_IN_AUTH,
+  SIGN_OUT_AUTH,
+  SIGN_UP_AUTH
+} from 'store/types/auth';
+
+import {
+  activatedAuth,
+  activatedErrorAuth,
+  activatingAuth,
+  checkedAuth,
+  checkedErrorAuth,
+  checkingAuth,
+  signedInAuth,
+  signedInErrorAuth,
+  signedOutAuth,
+  signedOutErrorAuth,
+  signedUpAuth,
+  signedUpErrorAuth,
+  signingInAuth,
+  signingOutAuth,
+  signingUpAuth
+} from 'store/actions/auth';
 
 import {
   ISignInAuthAction,
@@ -20,74 +43,74 @@ export default [
 ];
 
 function* signInSaga() {
-  yield takeLatest(authActionTypes.SIGN_IN_AUTH, callSignInSaga);
+  yield takeLatest(SIGN_IN_AUTH, callSignInSaga);
 }
 
 function* callSignInSaga({ payload }: ISignInAuthAction) {
   try {
-    yield put(authActions.signingInAuth());
+    yield put(signingInAuth());
     const { email, password } = payload;
-    yield call(authServices.signIn, email, password);
-    yield put(authActions.signedInAuth());
+    yield call(signIn, email, password);
+    yield put(signedInAuth());
   } catch (err) {
-    yield put(authActions.signedInErrorAuth(err.message));
+    yield put(signedInErrorAuth(err.message));
   }
 }
 
 function* checkAuth() {
-  yield takeLatest(authActionTypes.CHECK_AUTH, callCheckAuthSaga);
+  yield takeLatest(CHECK_AUTH, callCheckAuthSaga);
 }
 
 function* callCheckAuthSaga() {
   try {
-    yield put(authActions.checkingAuth());
-    yield call(authServices.check);
-    yield put(authActions.checkedAuth());
+    yield put(checkingAuth());
+    yield call(check);
+    yield put(checkedAuth());
   } catch (err) {
-    yield put(authActions.checkedErrorAuth(err.message));
+    yield put(checkedErrorAuth(err.message));
   }
 }
 
 function* signOutSaga() {
-  yield takeLatest(authActionTypes.SIGN_OUT_AUTH, callSignOutSaga);
+  yield takeLatest(SIGN_OUT_AUTH, callSignOutSaga);
 }
 
 function* callSignOutSaga() {
   try {
-    yield put(authActions.signingOutAuth());
-    yield call(authServices.signOut);
-    yield put(authActions.signedOutAuth());
+    yield put(signingOutAuth());
+    yield call(signOut);
+    yield put(signedOutAuth());
   } catch (err) {
-    yield put(authActions.signedOutErrorAuth(err.message));
+    yield put(signedOutErrorAuth(err.message));
   }
 }
 
 function* signUpSaga() {
-  yield takeLatest(authActionTypes.SIGN_UP_AUTH, callSignUpSaga);
+  yield takeLatest(SIGN_UP_AUTH, callSignUpSaga);
 }
 
 function* callSignUpSaga({ payload }: ISignUpAuthAction) {
   try {
     const { email, password } = payload;
-    yield put(authActions.signingUpAuth());
-    yield call(authServices.signUp, email, password);
-    yield put(authActions.signedUpAuth());
+    yield put(signingUpAuth());
+    yield call(signUp, email, password);
+    yield put(signedUpAuth());
   } catch (err) {
-    yield put(authActions.signedUpErrorAuth(err.message));
+    yield put(signedUpErrorAuth(err.message));
   }
 }
 
 function* activateSaga() {
-  yield takeLatest(authActionTypes.ACTIVATE_AUTH, callActivateSaga);
+  yield takeLatest(ACTIVATE_AUTH, callActivateSaga);
 }
 
 function* callActivateSaga({ payload }: IActivateAuthAction) {
   try {
     const { email, code } = payload;
-    yield put(authActions.activatingAuth());
-    yield call(authServices.activate, email, code);
-    yield put(authActions.activatedAuth());
+    yield put(activatingAuth());
+    yield call(activate, email, code);
+    yield put(activatedAuth());
   } catch (err) {
-    yield put(authActions.activatedErrorAuth(err.message));
+    yield put(activatedErrorAuth(err.message));
   }
 }

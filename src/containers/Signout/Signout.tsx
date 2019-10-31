@@ -3,17 +3,17 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Row, Col } from 'react-bootstrap';
 
-import * as authActions from 'store/actions/auth';
-import * as authSelectors from 'selectors/auth';
+import { signOutAuth } from 'store/actions/auth';
+import { selectAuthSignedIn } from 'selectors/auth';
 
 const Signout: FC<RouteComponentProps> = ({ history }) => {
   const { push } = history;
 
   const dispatch = useDispatch();
-  const signedIn = useSelector(authSelectors.selectAuthSignedIn);
+  const signedIn = useSelector(selectAuthSignedIn);
 
   useEffect(() => {
-    dispatch(authActions.signOutAuth());
+    dispatch(signOutAuth());
   }, [dispatch]);
 
   useEffect(() => {

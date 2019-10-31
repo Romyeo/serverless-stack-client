@@ -3,11 +3,11 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
-import * as ROUTES from 'constants/routes';
+import { authenticatedRoutes, defaultRoutes } from 'constants/routes';
 
-import * as authActions from 'store/actions/auth';
+import { checkAuth } from 'store/actions/auth';
 
-import * as authSelectors from 'selectors/auth';
+import { selectAuthSignedIn } from 'selectors/auth';
 
 import Home from 'components/Home/Home';
 import Navigation from 'components/Navigation/Navigation';
@@ -17,17 +17,15 @@ import './App.css';
 
 const App: FC = () => {
   const dispatch = useDispatch();
-  const signedIn = useSelector(authSelectors.selectAuthSignedIn);
-  const [routes, setRoutes] = useState(ROUTES.defaultRoutes);
+  const signedIn = useSelector(selectAuthSignedIn);
+  const [routes, setRoutes] = useState(defaultRoutes);
 
   useEffect(() => {
-    dispatch(authActions.checkAuth());
+    dispatch(checkAuth());
   }, [dispatch]);
 
   useEffect(() => {
-    signedIn
-      ? setRoutes([...ROUTES.authenticatedRoutes])
-      : setRoutes([...ROUTES.defaultRoutes]);
+    signedIn ? setRoutes(authenticatedRoutes) : setRoutes(defaultRoutes);
   }, [signedIn]);
 
   return (

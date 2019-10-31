@@ -1,11 +1,4 @@
-import React, {
-  FC,
-  useEffect,
-  useState,
-  FormEvent,
-  Fragment,
-  MouseEvent
-} from 'react';
+import React, { FC, useEffect, useState, FormEvent, Fragment } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Alert, Button, Col, Form, ProgressBar, Row } from 'react-bootstrap';
@@ -13,7 +6,17 @@ import zxcvbn from 'zxcvbn';
 
 import { activateAuth, signInAuth, signUpAuth } from 'store/actions/auth';
 
-import * as authSelectors from 'selectors/auth';
+import {
+  selectAuthActivated,
+  selectAuthActivatedError,
+  selectAuthActivating,
+  selectAuthSignedIn,
+  selectAuthSignedInError,
+  selectAuthSignedUp,
+  selectAuthSignedUpError,
+  selectAuthSigningIn,
+  selectAuthSigningUp
+} from 'selectors/auth';
 
 import useFormFields from 'hooks/formFields';
 
@@ -31,17 +34,17 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
 
   const dispatch = useDispatch();
 
-  const activated = useSelector(authSelectors.selectAuthActivated);
-  const activatedError = useSelector(authSelectors.selectAuthActivatedError);
-  const activating = useSelector(authSelectors.selectAuthActivating);
+  const activated = useSelector(selectAuthActivated);
+  const activatedError = useSelector(selectAuthActivatedError);
+  const activating = useSelector(selectAuthActivating);
 
-  const signedIn = useSelector(authSelectors.selectAuthSignedIn);
-  const signedInError = useSelector(authSelectors.selectAuthSignedInError);
-  const signingIn = useSelector(authSelectors.selectAuthSigningIn);
+  const signedIn = useSelector(selectAuthSignedIn);
+  const signedInError = useSelector(selectAuthSignedInError);
+  const signingIn = useSelector(selectAuthSigningIn);
 
-  const signedUp = useSelector(authSelectors.selectAuthSignedUp);
-  const signedUpError = useSelector(authSelectors.selectAuthSignedUpError);
-  const signingUp = useSelector(authSelectors.selectAuthSigningUp);
+  const signedUp = useSelector(selectAuthSignedUp);
+  const signedUpError = useSelector(selectAuthSignedUpError);
+  const signingUp = useSelector(selectAuthSigningUp);
 
   const [passStr, setPassStr] = useState(0);
   const [error, setError] = useState('');

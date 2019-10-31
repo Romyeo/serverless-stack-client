@@ -1,7 +1,7 @@
-export const ACTIVATE_AUTH = '@auth/ACTIVATE_AUTH';
-export const ACTIVATED_AUTH = '@auth/ACTIVATED_AUTH';
-export const ACTIVATED_ERROR_AUTH = '@auth/ACTIVATED_ERROR_AUTH';
-export const ACTIVATING_AUTH = '@auth/ACTIVATING_AUTH';
+export const ACTIVATE_AUTH = '@auth/ACTIVATE';
+export const ACTIVATED_AUTH = '@auth/ACTIVATED';
+export const ACTIVATED_ERROR_AUTH = '@auth/ACTIVATED_ERROR';
+export const ACTIVATING_AUTH = '@auth/ACTIVATING';
 
 export const CHECK_AUTH = '@auth/CHECK';
 export const CHECKED_AUTH = '@auth/CHECKED';
