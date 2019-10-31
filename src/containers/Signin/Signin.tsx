@@ -3,9 +3,13 @@ import { useDispatch, useSelector } from 'react-redux';
 import { RouteComponentProps } from 'react-router';
 import { Button, Form, Alert, Row, Col } from 'react-bootstrap';
 
-import * as authActions from 'store/actions/auth';
+import { signInAuth } from 'store/actions/auth';
 
-import * as authSelectors from 'selectors/auth';
+import {
+  selectAuthSignedInError,
+  selectAuthSigningIn,
+  selectAuthSignedIn
+} from 'selectors/auth';
 
 import useFormFields from 'hooks/formFields';
 
@@ -18,9 +22,9 @@ const Signin: FC<RouteComponentProps> = ({ history }) => {
   const { push } = history;
 
   const dispatch = useDispatch();
-  const error = useSelector(authSelectors.selectAuthSignedInError);
-  const signingIn = useSelector(authSelectors.selectAuthSigningIn);
-  const signedIn = useSelector(authSelectors.selectAuthSignedIn);
+  const error = useSelector(selectAuthSignedInError);
+  const signingIn = useSelector(selectAuthSigningIn);
+  const signedIn = useSelector(selectAuthSignedIn);
 
   const [fields, handleFieldChange] = useFormFields<IFormState>({
     email: '',
@@ -35,7 +39,7 @@ const Signin: FC<RouteComponentProps> = ({ history }) => {
 
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(authActions.signInAuth(email, password));
+    dispatch(signInAuth(email, password));
   };
 
   return (
