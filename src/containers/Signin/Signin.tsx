@@ -18,7 +18,7 @@ const Signin: FC<RouteComponentProps> = ({ history }) => {
   const { push } = history;
 
   const dispatch = useDispatch();
-  const error = useSelector(authSelectors.selectAuthCheckedError);
+  const error = useSelector(authSelectors.selectAuthSignedInError);
   const signingIn = useSelector(authSelectors.selectAuthSigningIn);
   const signedIn = useSelector(authSelectors.selectAuthSignedIn);
 
@@ -44,7 +44,7 @@ const Signin: FC<RouteComponentProps> = ({ history }) => {
         <Form onSubmit={handleSubmit}>
           {error && <Alert variant="danger">{error}</Alert>}
 
-          <Form.Group controlId="formBasicEmail">
+          <Form.Group controlId="email">
             <Form.Label>Email address</Form.Label>
             <Form.Control
               name="email"
@@ -56,7 +56,7 @@ const Signin: FC<RouteComponentProps> = ({ history }) => {
             />
           </Form.Group>
 
-          <Form.Group controlId="formBasicPassword">
+          <Form.Group controlId="password">
             <Form.Label>Password</Form.Label>
             <Form.Control
               name="password"

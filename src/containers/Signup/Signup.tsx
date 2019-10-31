@@ -65,6 +65,7 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
 
   const handleSignUpSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    setError('');
 
     let error = '';
 
@@ -79,18 +80,17 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
     }
 
     dispatch(signUpAuth(email, password));
-    setError('');
   };
 
   const handleActivateSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    dispatch(activateAuth(email, code));
     setError('');
+    dispatch(activateAuth(email, code));
   };
 
-  const handleSignInClick = (event: MouseEvent<HTMLButtonElement>) => {
-    dispatch(signInAuth(email, password));
+  const handleSignInClick = () => {
     setError('');
+    dispatch(signInAuth(email, password));
   };
 
   const renderSignUp = (
@@ -99,7 +99,7 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
         <Alert variant="danger">{error || signedUpError}</Alert>
       )}
 
-      <Form.Group controlId="formBasicEmail">
+      <Form.Group controlId="email">
         <Form.Label>Email address</Form.Label>
         <Form.Control
           name="email"
@@ -111,7 +111,7 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
         />
       </Form.Group>
 
-      <Form.Group controlId="formBasicPassword">
+      <Form.Group controlId="password">
         <Form.Label>Password</Form.Label>
         <Form.Control
           name="password"
@@ -124,7 +124,7 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
         <ProgressBar min={0} max={4} now={passStr} />
       </Form.Group>
 
-      <Form.Group controlId="formBasicConfirmPassword">
+      <Form.Group controlId="confirmPassword">
         <Form.Label>Confirm password</Form.Label>
         <Form.Control
           name="confirmPassword"
@@ -148,7 +148,7 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
         <Alert variant="danger">{error || activatedError}</Alert>
       )}
 
-      <Form.Group controlId="formBasicCode">
+      <Form.Group controlId="code">
         <Form.Label>Activation code</Form.Label>
         <Form.Control
           name="code"
