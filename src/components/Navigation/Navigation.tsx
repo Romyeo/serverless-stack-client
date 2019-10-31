@@ -16,11 +16,17 @@ const Navigation: FC<IProps> = ({ routes }) => {
 
       <Navbar.Collapse>
         <Nav className="ml-auto">
-          {routes.map(route => (
-            <LinkContainer to={route.path} key={route.name} exact>
-              <Nav.Link>{route.name}</Nav.Link>
-            </LinkContainer>
-          ))}
+          {routes.reduce((links: JSX.Element[], route) => {
+            if (route.hidden) return links;
+
+            links.push(
+              <LinkContainer to={route.path} key={route.path} exact>
+                <Nav.Link>{route.name}</Nav.Link>
+              </LinkContainer>
+            );
+
+            return links;
+          }, [])}
         </Nav>
       </Navbar.Collapse>
     </Navbar>
