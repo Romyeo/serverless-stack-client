@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Route, Switch } from 'react-router-dom';
 import { Container } from 'react-bootstrap';
 
-import * as ROUTES from 'constants/routes';
+import ROUTES from 'constants/routes';
 
 import * as authActions from 'store/actions/auth';
 

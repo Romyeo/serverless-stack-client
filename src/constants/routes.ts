@@ -24,3 +24,8 @@ export const authenticatedRoutes: IRoute[] = [
     name: 'Sign out'
   }
 ];
+
+export default {
+  defaultRoutes,
+  authenticatedRoutes
+};
