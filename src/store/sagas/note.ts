@@ -1,23 +1,30 @@
 import { call, fork, put, takeLatest } from 'redux-saga/effects';
 
-import { addNote, fetchNotes } from 'services/note';
+import { addNote, fetchNotes, fetchNote } from 'services/note';
 
-import { ADD_NOTE, FETCH_LIST_NOTE } from 'store/types/note';
+import { ADD_NOTE, FETCH_LIST_NOTE, FETCH_NOTE } from 'store/types/note';
 
 import {
   addedErrorNote,
   addedNote,
   addingNote,
   fetchedErrorListNote,
+  fetchedErrorNote,
+  fetchedListNote,
+  fetchedNote,
   fetchingListNote,
-  fetchedListNote
+  fetchingNote
 } from 'store/actions/note';
 
 import INote from 'interfaces/general/note';
 
-import { IAddNoteAction } from 'interfaces/actions/note';
+import { IAddNoteAction, IFetchNoteAction } from 'interfaces/actions/note';
 
-export default [fork(addNoteSaga), fork(fetchListNoteSaga)];
+export default [
+  fork(addNoteSaga),
+  fork(fetchListNoteSaga),
+  fork(fetchNoteSaga)
+];
 
 function* addNoteSaga() {
   yield takeLatest(ADD_NOTE, callAddNoteSaga);
@@ -45,5 +52,19 @@ function* callFetchListNoteSaga() {
     yield put(fetchedListNote(notes));
   } catch (err) {
     yield put(fetchedErrorListNote(err.message));
+  }
+}
+
+function* fetchNoteSaga() {
+  yield takeLatest(FETCH_NOTE, callFetchNoteSaga);
+}
+
+function* callFetchNoteSaga({ payload }: IFetchNoteAction) {
+  try {
+    yield put(fetchingNote());
+    const note: INote = yield call(fetchNote, payload);
+    yield put(fetchedNote(note));
+  } catch (err) {
+    yield put(fetchedErrorNote(err.message));
   }
 }

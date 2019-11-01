@@ -24,8 +24,10 @@ const NoteList: FC<RouteComponentProps> = ({ history }) => {
   const notes = useSelector(selectNoteListFetchedData);
 
   useEffect(() => {
-    dispatch(fetchListNote());
-  }, [dispatch]);
+    if (!notes.length) {
+      dispatch(fetchListNote());
+    }
+  }, [dispatch, notes]);
 
   const handleAddNote = () => {
     push('/notes/add');

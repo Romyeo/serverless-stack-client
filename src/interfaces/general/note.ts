@@ -4,6 +4,7 @@ interface INote {
   noteId: string;
   userId: string;
   attachment?: string;
+  attachmentURL?: string;
 }
 
 export default INote;

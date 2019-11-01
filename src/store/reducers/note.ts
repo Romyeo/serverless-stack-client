@@ -3,12 +3,16 @@ import {
   ADDED_NOTE,
   ADDING_NOTE,
   FETCHED_ERROR_LIST_NOTE,
+  FETCHED_ERROR_NOTE,
   FETCHED_LIST_NOTE,
-  FETCHING_LIST_NOTE
+  FETCHED_NOTE,
+  FETCHING_LIST_NOTE,
+  FETCHING_NOTE
 } from 'store/types/note';
 
 import {
   NoteAddActionTypesTs,
+  NoteFetchActionTypesTs,
   NoteFetchListActionTypesTs
 } from 'types/actions/note';
 
@@ -56,7 +60,7 @@ const list = (
       return { ...INIT_STATE_LIST, error: action.payload };
 
     case FETCHED_LIST_NOTE:
-      return { ...INIT_STATE_LIST, notes: action.payload };
+      return { ...INIT_STATE_LIST, fetched: true, notes: action.payload };
 
     case FETCHING_LIST_NOTE:
       return { ...INIT_STATE_LIST, fetching: true };
@@ -66,7 +70,34 @@ const list = (
   }
 };
 
+const INIT_STATE_FETCH: INoteState['fetch'] = {
+  fetching: false,
+  fetched: false,
+  error: '',
+  note: undefined
+};
+
+const fetch = (
+  state = INIT_STATE_FETCH,
+  action: NoteFetchActionTypesTs
+): INoteState['fetch'] => {
+  switch (action.type) {
+    case FETCHED_ERROR_NOTE:
+      return { ...INIT_STATE_FETCH, error: action.payload };
+
+    case FETCHED_NOTE:
+      return { ...INIT_STATE_FETCH, fetched: true, note: action.payload };
+
+    case FETCHING_NOTE:
+      return { ...INIT_STATE_FETCH, fetching: true };
+
+    default:
+      return state;
+  }
+};
+
 export default combineReducers<INoteState>({
   add,
-  list
+  list,
+  fetch
 });
