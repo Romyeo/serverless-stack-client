@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 
-import { addNote } from 'store/actions/note';
+import { addNote, fetchListNote } from 'store/actions/note';
 
 import useFormFields from 'hooks/formFields';
 
@@ -22,7 +22,7 @@ import {
 } from 'selectors/note';
 
 interface IFormFields {
-  note: string;
+  content: string;
 }
 
 const MAX_SIZE = config.attachment.MAX_ATTACHMENT_SIZE / 1000000;
@@ -33,15 +33,20 @@ const NoteAdd: FC<RouteComponentProps> = ({ history }) => {
   const dispatch = useDispatch();
   const file = useRef<File>();
   const [error, setError] = useState('');
-  const [fields, handleFieldChange] = useFormFields<IFormFields>({ note: '' });
+  const [fields, handleFieldChange] = useFormFields<IFormFields>({
+    content: ''
+  });
 
   const added = useSelector(selectNoteAdded);
   const adding = useSelector(selectNoteAdding);
   const addError = useSelector(selectNoteAddError);
 
   useEffect(() => {
-    if (added) push('/');
-  }, [added, push]);
+    if (added) {
+      dispatch(fetchListNote());
+      push('/');
+    }
+  }, [dispatch, added, push]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     file.current = event.target.files![0];
@@ -61,7 +66,7 @@ const NoteAdd: FC<RouteComponentProps> = ({ history }) => {
       return;
     }
 
-    dispatch(addNote(fields.note, file.current));
+    dispatch(addNote(fields.content, file.current));
   };
 
   return (
@@ -72,18 +77,18 @@ const NoteAdd: FC<RouteComponentProps> = ({ history }) => {
             <Alert variant="danger">{error || addError}</Alert>
           )}
 
-          <Form.Group controlId="note">
+          <Form.Group controlId="content">
             <Form.Control
-              name="note"
+              name="content"
               as="textarea"
               placeholder="Scratch your notes here"
               rows="10"
               onChange={handleFieldChange}
-              value={fields.note}
+              value={fields.content}
               required
             />
           </Form.Group>
-          <Form.Group controlId="note">
+          <Form.Group controlId="attachment">
             <Form.Text style={{ marginBottom: 15 }}>
               (Optional) You can upload an attachment to your scratch, make sure
               it's smaller than 5MB

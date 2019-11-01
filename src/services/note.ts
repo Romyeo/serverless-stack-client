@@ -1,6 +1,6 @@
 import { API } from 'aws-amplify';
 
-import { fileUpload } from 'services/file';
+import { fileUpload, fileGet } from 'services/file';
 
 import INote from 'interfaces/general/note';
 
@@ -23,4 +23,15 @@ export const addNote = async (note: string, attachment?: File) => {
 
 export const fetchNotes = async (): Promise<INote[]> => {
   return await API.get(ENDPOINT, '/notes', null);
+};
+
+export const fetchNote = async (id: string): Promise<INote> => {
+  const data: INote = await API.get(ENDPOINT, `/notes/${id}`, null);
+
+  if (data.attachment) {
+    const fileAttachment = await fileGet(data.attachment);
+    if (typeof fileAttachment === 'string') data.attachmentURL = fileAttachment;
+  }
+
+  return data;
 };

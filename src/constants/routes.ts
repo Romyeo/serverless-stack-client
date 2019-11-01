@@ -2,6 +2,7 @@ import Signin from 'containers/Signin/Signin';
 import Signout from 'containers/Signout/Signout';
 import Signup from 'containers/Signup/Signup';
 import NoteAdd from 'containers/Note/Add';
+import Note from 'containers/Note/Note';
 
 import IRoute from 'interfaces/general/route';
 
@@ -23,6 +24,12 @@ export const authenticatedRoutes: IRoute[] = [
     path: '/notes/add',
     component: NoteAdd,
     name: 'Add note',
+    hidden: true
+  },
+  {
+    path: '/notes/:id',
+    component: Note,
+    name: 'Note',
     hidden: true
   },
   {

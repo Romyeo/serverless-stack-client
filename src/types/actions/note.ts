@@ -4,9 +4,13 @@ import {
   IAddingNoteAction,
   IAddNoteAction,
   IFetchedErrorListNoteAction,
+  IFetchedErrorNoteAction,
   IFetchedListNoteAction,
+  IFetchedNoteAction,
   IFetchingListNoteAction,
-  IFetchListNoteAction
+  IFetchingNoteAction,
+  IFetchListNoteAction,
+  IFetchNoteAction
 } from 'interfaces/actions/note';
 
 export type NoteAddActionTypesTs =
@@ -20,3 +24,9 @@ export type NoteFetchListActionTypesTs =
   | IFetchedListNoteAction
   | IFetchingListNoteAction
   | IFetchListNoteAction;
+
+export type NoteFetchActionTypesTs =
+  | IFetchedErrorNoteAction
+  | IFetchedNoteAction
+  | IFetchingNoteAction
+  | IFetchNoteAction;

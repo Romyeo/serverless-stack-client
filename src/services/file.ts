@@ -12,3 +12,9 @@ export const fileUpload = async (file: File) => {
 
   return stored.key;
 };
+
+export const fileGet = async (
+  key: string
+): Promise<object | string | undefined> => {
+  return await Storage.vault.get(key);
+};

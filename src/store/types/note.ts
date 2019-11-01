@@ -7,3 +7,8 @@ export const FETCH_LIST_NOTE = '@note/FETCH_LIST';
 export const FETCHED_ERROR_LIST_NOTE = '@note/FETCHED_ERROR_LIST';
 export const FETCHED_LIST_NOTE = '@note/FETCHED_LIST';
 export const FETCHING_LIST_NOTE = '@note/FETCHING_LIST';
+
+export const FETCH_NOTE = '@note/FETCH';
+export const FETCHED_ERROR_NOTE = '@note/FETCHED_ERROR';
+export const FETCHED_NOTE = '@note/FETCHED';
+export const FETCHING_NOTE = '@note/FETCHING';
