@@ -1,4 +1,4 @@
-export default interface IAuth {
+export default interface IAuthState {
   activated: boolean;
   activating: boolean;
   checkingAuth: boolean;

@@ -9,6 +9,8 @@ import { checkAuth } from 'store/actions/auth';
 
 import { selectAuthSignedIn } from 'selectors/auth';
 
+import NoteList from 'containers/Note/List';
+
 import Home from 'components/Home/Home';
 import Navigation from 'components/Navigation/Navigation';
 import NotFound from 'components/NotFound/NotFound';
@@ -33,7 +35,7 @@ const App: FC = () => {
       <Navigation routes={routes} />
       <Container>
         <Switch>
-          <Route path="/" exact component={Home} />
+          <Route path="/" exact component={signedIn ? NoteList : Home} />
           {routes.map(route => (
             <Route
               path={route.path}

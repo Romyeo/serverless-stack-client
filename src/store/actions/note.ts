@@ -1,15 +1,25 @@
+import INote from 'interfaces/general/note';
+
 import {
   ADD_NOTE,
   ADDED_NOTE,
   ADDED_ERROR_NOTE,
-  ADDING_NOTE
+  ADDING_NOTE,
+  FETCH_LIST_NOTE,
+  FETCHED_ERROR_LIST_NOTE,
+  FETCHED_LIST_NOTE,
+  FETCHING_LIST_NOTE
 } from 'store/types/note';
 
 import {
   IAddNoteAction,
   IAddedNoteAction,
   IAddedErrorNoteAction,
-  IAddingNoteAction
+  IAddingNoteAction,
+  IFetchListNoteAction,
+  IFetchedErrorListNoteAction,
+  IFetchedListNoteAction,
+  IFetchingListNoteAction
 } from 'interfaces/actions/note';
 
 export const addNote = (note: string, attachment?: File): IAddNoteAction => {
@@ -35,5 +45,33 @@ export const addedErrorNote = (error: string): IAddedErrorNoteAction => {
 export const addingNote = (): IAddingNoteAction => {
   return {
     type: ADDING_NOTE
+  };
+};
+
+export const fetchListNote = (): IFetchListNoteAction => {
+  return {
+    type: FETCH_LIST_NOTE
+  };
+};
+
+export const fetchedErrorListNote = (
+  error: string
+): IFetchedErrorListNoteAction => {
+  return {
+    type: FETCHED_ERROR_LIST_NOTE,
+    payload: error
+  };
+};
+
+export const fetchedListNote = (notes: INote[]): IFetchedListNoteAction => {
+  return {
+    type: FETCHED_LIST_NOTE,
+    payload: notes
+  };
+};
+
+export const fetchingListNote = (): IFetchingListNoteAction => {
+  return {
+    type: FETCHING_LIST_NOTE
   };
 };

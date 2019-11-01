@@ -22,3 +22,28 @@ export const selectNoteAddError = createSelector(
   selectNoteAdd,
   add => add.error
 );
+
+export const selectNoteList = createSelector(
+  selectNote,
+  note => note.list
+);
+
+export const selectNoteListFetching = createSelector(
+  selectNoteList,
+  list => list.fetching
+);
+
+export const selectNoteListFetched = createSelector(
+  selectNoteList,
+  list => list.fetched
+);
+
+export const selectNoteListFetchedData = createSelector(
+  selectNoteList,
+  list => list.notes
+);
+
+export const selectNoteListError = createSelector(
+  selectNoteList,
+  list => list.error
+);

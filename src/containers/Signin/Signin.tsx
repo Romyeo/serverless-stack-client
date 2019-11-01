@@ -43,7 +43,7 @@ const Signin: FC<RouteComponentProps> = ({ history }) => {
   };
 
   return (
-    <Row className="justify-content-md-center">
+    <Row className="justify-content-center">
       <Col lg="5">
         <Form onSubmit={handleSubmit}>
           {error && <Alert variant="danger">{error}</Alert>}

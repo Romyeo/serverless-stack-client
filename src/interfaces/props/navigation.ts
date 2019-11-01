@@ -1,7 +1,7 @@
 import IRoute from 'interfaces/general/route';
 
-interface IProps {
+interface INavigationProps {
   routes: IRoute[];
 }
 
-export default IProps;
+export default INavigationProps;

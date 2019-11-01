@@ -1,0 +1,42 @@
+/* .custom-flush-list-item {
+  padding-left: 0;
+  padding-right: 0;
+} */
+
+.item-note-con {
+  padding: 3px 0px;
+}
+
+.item-note-con .item-note-con-header {
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1.5;
+  margin: 0;
+}
+
+.item-note-con .item-note-con-footer {
+  display: flex;
+  margin-top: 5px;
+}
+
+.item-note-con .item-note-con-footer p {
+  margin: 0;
+  font-size: 14px;
+  color: rgba(0,0,0,.5);
+}
+
+.item-note-con .item-note-con-footer p:first-child {
+  display: block;
+  flex-shrink: 0;
+}
+
+.item-note-con .item-note-con-footer p:nth-child(2) {
+  margin-left: 15px;
+}
+
+.item-note-con .item-note-con-header,
+.item-note-con .item-note-con-footer p:nth-child(2) {
+  overflow: hidden;
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
