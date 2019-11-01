@@ -65,8 +65,8 @@ const NoteAdd: FC<RouteComponentProps> = ({ history }) => {
   };
 
   return (
-    <Row>
-      <Col>
+    <Row className="justify-content-center">
+      <Col lg={7}>
         <Form onSubmit={handleSubmit}>
           {(error || addError) && (
             <Alert variant="danger">{error || addError}</Alert>

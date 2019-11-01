@@ -2,8 +2,14 @@ import {
   ADD_NOTE,
   ADDED_ERROR_NOTE,
   ADDED_NOTE,
-  ADDING_NOTE
+  ADDING_NOTE,
+  FETCH_LIST_NOTE,
+  FETCHED_ERROR_LIST_NOTE,
+  FETCHED_LIST_NOTE,
+  FETCHING_LIST_NOTE
 } from 'store/types/note';
+
+import INote from 'interfaces/general/note';
 
 export interface IAddNoteAction {
   type: typeof ADD_NOTE;
@@ -21,4 +27,22 @@ export interface IAddedNoteAction {
 
 export interface IAddingNoteAction {
   type: typeof ADDING_NOTE;
+}
+
+export interface IFetchListNoteAction {
+  type: typeof FETCH_LIST_NOTE;
+}
+
+export interface IFetchedErrorListNoteAction {
+  type: typeof FETCHED_ERROR_LIST_NOTE;
+  payload: string;
+}
+
+export interface IFetchedListNoteAction {
+  type: typeof FETCHED_LIST_NOTE;
+  payload: INote[];
+}
+
+export interface IFetchingListNoteAction {
+  type: typeof FETCHING_LIST_NOTE;
 }

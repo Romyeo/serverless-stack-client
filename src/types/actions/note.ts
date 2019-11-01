@@ -1,12 +1,22 @@
 import {
-  IAddNoteAction,
-  IAddedNoteAction,
   IAddedErrorNoteAction,
-  IAddingNoteAction
+  IAddedNoteAction,
+  IAddingNoteAction,
+  IAddNoteAction,
+  IFetchedErrorListNoteAction,
+  IFetchedListNoteAction,
+  IFetchingListNoteAction,
+  IFetchListNoteAction
 } from 'interfaces/actions/note';
 
 export type NoteAddActionTypesTs =
-  | IAddNoteAction
-  | IAddedNoteAction
   | IAddedErrorNoteAction
-  | IAddingNoteAction;
+  | IAddedNoteAction
+  | IAddingNoteAction
+  | IAddNoteAction;
+
+export type NoteFetchListActionTypesTs =
+  | IFetchedErrorListNoteAction
+  | IFetchedListNoteAction
+  | IFetchingListNoteAction
+  | IFetchListNoteAction;

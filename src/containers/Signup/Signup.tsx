@@ -193,7 +193,7 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
   );
 
   return (
-    <Row className="justify-content-md-center">
+    <Row className="justify-content-center">
       <Col lg="5">
         {!signedUp
           ? signingIn
