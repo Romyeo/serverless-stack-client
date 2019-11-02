@@ -20,11 +20,17 @@ export default interface INoteState {
     fetched: boolean;
     error: string;
     // TODO: Change this to data: D or extends IDataState, if going to be generic
-    note?: INote;
+    note: INote;
   };
   delete: {
     deleting: boolean;
     deleted: boolean;
     error: string;
+  };
+  update: {
+    updating: boolean;
+    updated: boolean;
+    error: string;
+    id: string;
   };
 }

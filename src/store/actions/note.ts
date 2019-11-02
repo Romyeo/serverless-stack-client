@@ -16,7 +16,11 @@ import {
   FETCHED_LIST_NOTE,
   FETCHED_NOTE,
   FETCHING_LIST_NOTE,
-  FETCHING_NOTE
+  FETCHING_NOTE,
+  UPDATE_NOTE,
+  UPDATED_ERROR_NOTE,
+  UPDATED_NOTE,
+  UPDATING_NOTE
 } from 'store/types/note';
 
 import {
@@ -24,6 +28,10 @@ import {
   IAddedNoteAction,
   IAddingNoteAction,
   IAddNoteAction,
+  IDeletedErrorNoteAction,
+  IDeletedNoteAction,
+  IDeleteNoteAction,
+  IDeletingNoteAction,
   IFetchedErrorListNoteAction,
   IFetchedErrorNoteAction,
   IFetchedListNoteAction,
@@ -32,10 +40,10 @@ import {
   IFetchingNoteAction,
   IFetchListNoteAction,
   IFetchNoteAction,
-  IDeletedErrorNoteAction,
-  IDeletedNoteAction,
-  IDeleteNoteAction,
-  IDeletingNoteAction
+  IUpdatedErrorNoteAction,
+  IUpdatedNoteAction,
+  IUpdateNoteAction,
+  IUpdatingNoteAction
 } from 'interfaces/actions/note';
 
 export const addNote = (note: string, attachment?: File): IAddNoteAction => {
@@ -154,5 +162,41 @@ export const deletedNote = (deleted?: boolean): IDeletedNoteAction => {
 export const deletingNote = (): IDeletingNoteAction => {
   return {
     type: DELETING_NOTE
+  };
+};
+
+export const updateNote = (
+  note: INote,
+  attachment?: File
+): IUpdateNoteAction => {
+  return {
+    type: UPDATE_NOTE,
+    payload: { note, attachment }
+  };
+};
+
+export const updatedErrorNote = (error: string): IUpdatedErrorNoteAction => {
+  return {
+    type: UPDATED_ERROR_NOTE,
+    payload: error
+  };
+};
+
+export const updatedNote = (
+  updated?: boolean,
+  id?: string
+): IUpdatedNoteAction => {
+  return {
+    type: UPDATED_NOTE,
+    payload: {
+      updated,
+      id
+    }
+  };
+};
+
+export const updatingNote = (): IUpdatingNoteAction => {
+  return {
+    type: UPDATING_NOTE
   };
 };

@@ -62,6 +62,7 @@ const NoteAdd: FC<RouteComponentProps> = () => {
               as="textarea"
               placeholder="Scratch your notes here"
               rows="10"
+              disabled={adding}
               onChange={handleFieldChange}
               value={fields.content}
               required
@@ -73,6 +74,7 @@ const NoteAdd: FC<RouteComponentProps> = () => {
               it's smaller than 5MB
             </Form.Text>
             <Form.Control
+              disabled={adding}
               onChange={handleFileChange}
               name="attachment"
               type="file"

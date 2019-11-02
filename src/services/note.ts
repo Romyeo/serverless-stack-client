@@ -46,3 +46,19 @@ export const deleteNote = async (
 
   await API.del(ENDPOINT, `/notes/${id}`, null);
 };
+
+export const updateNote = async (
+  note: INote,
+  attachment?: File
+): Promise<INote> => {
+  let fileKey = note.attachment;
+
+  if (attachment) {
+    if (fileKey) await fileDelete(fileKey);
+    fileKey = await fileUpload(attachment);
+  }
+
+  return await API.put(ENDPOINT, `/notes/${note.noteId}`, {
+    body: { ...note, attachment: fileKey }
+  });
+};
