@@ -14,7 +14,11 @@ import {
   FETCHED_LIST_NOTE,
   FETCHED_NOTE,
   FETCHING_LIST_NOTE,
-  FETCHING_NOTE
+  FETCHING_NOTE,
+  UPDATE_NOTE,
+  UPDATED_ERROR_NOTE,
+  UPDATED_NOTE,
+  UPDATING_NOTE
 } from 'store/types/note';
 
 import INote from 'interfaces/general/note';
@@ -90,4 +94,20 @@ export interface IDeletedNoteAction {
 
 export interface IDeletingNoteAction {
   type: typeof DELETING_NOTE;
+}
+
+export interface IUpdateNoteAction {
+  type: typeof UPDATE_NOTE;
+  payload: { note: INote; attachment?: File };
+}
+export interface IUpdatedErrorNoteAction {
+  type: typeof UPDATED_ERROR_NOTE;
+  payload: string;
+}
+export interface IUpdatedNoteAction {
+  type: typeof UPDATED_NOTE;
+  payload: { updated?: boolean; id?: string };
+}
+export interface IUpdatingNoteAction {
+  type: typeof UPDATING_NOTE;
 }

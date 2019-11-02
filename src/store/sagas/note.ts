@@ -1,15 +1,23 @@
 import { call, fork, put, takeLatest, takeEvery } from 'redux-saga/effects';
 import { push } from 'connected-react-router';
 
-import { addNote, fetchNotes, fetchNote, deleteNote } from 'services/note';
+import {
+  addNote,
+  deleteNote,
+  fetchNote,
+  fetchNotes,
+  updateNote
+} from 'services/note';
 
 import {
   ADD_NOTE,
+  ADDED_NOTE,
   DELETE_NOTE,
+  DELETED_NOTE,
   FETCH_LIST_NOTE,
   FETCH_NOTE,
-  DELETED_NOTE,
-  ADDED_NOTE
+  UPDATE_NOTE,
+  UPDATED_NOTE
 } from 'store/types/note';
 
 import {
@@ -25,7 +33,9 @@ import {
   fetchedNote,
   fetchingListNote,
   fetchingNote,
-  fetchListNote
+  updatedErrorNote,
+  updatedNote,
+  updatingNote
 } from 'store/actions/note';
 
 import INote from 'interfaces/general/note';
@@ -33,7 +43,11 @@ import INote from 'interfaces/general/note';
 import {
   IAddNoteAction,
   IDeleteNoteAction,
-  IFetchNoteAction
+  IFetchNoteAction,
+  IUpdateNoteAction,
+  IDeletedNoteAction,
+  IAddedNoteAction,
+  IUpdatedNoteAction
 } from 'interfaces/actions/note';
 
 export default [
@@ -41,7 +55,8 @@ export default [
   fork(deleteNoteSaga),
   fork(fetchListNoteSaga),
   fork(fetchNoteSaga),
-  fork(listenNoteSaga)
+  fork(listenNoteSaga),
+  fork(updateNoteSaga)
 ];
 
 function* addNoteSaga() {
@@ -102,11 +117,42 @@ function* callDeleteNoteSaga({ payload }: IDeleteNoteAction) {
   }
 }
 
-function* listenNoteSaga() {
-  yield takeEvery([DELETED_NOTE, ADDED_NOTE], callListenNoteSaga);
+function* updateNoteSaga() {
+  yield takeLatest(UPDATE_NOTE, callUpdateNoteSaga);
 }
 
-function* callListenNoteSaga() {
-  yield put(fetchListNote());
-  yield put(push('/'));
+function* callUpdateNoteSaga({ payload }: IUpdateNoteAction) {
+  try {
+    yield put(updatingNote());
+    const { note, attachment } = payload;
+    yield call(updateNote, note, attachment);
+    yield put(updatedNote(true, note.noteId));
+  } catch (err) {
+    yield put(updatedErrorNote(err.message));
+  }
+}
+
+function* listenNoteSaga() {
+  yield takeEvery([DELETED_NOTE, ADDED_NOTE, UPDATED_NOTE], callListenNoteSaga);
+}
+
+function* callListenNoteSaga(
+  action: IDeletedNoteAction | IAddedNoteAction | IUpdatedNoteAction
+) {
+  yield fork(callFetchListNoteSaga);
+
+  switch (action.type) {
+    case UPDATED_NOTE:
+      if (action.payload.id) {
+        yield fork(callFetchNoteSaga, {
+          type: FETCH_NOTE,
+          payload: action.payload.id
+        });
+      }
+      break;
+
+    default:
+      yield put(push('/'));
+      break;
+  }
 }

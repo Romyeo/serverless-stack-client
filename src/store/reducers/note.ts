@@ -5,20 +5,24 @@ import {
   DELETED_ERROR_NOTE,
   DELETED_NOTE,
   DELETING_NOTE,
+  FETCH_LIST_NOTE,
   FETCHED_ERROR_LIST_NOTE,
   FETCHED_ERROR_NOTE,
   FETCHED_LIST_NOTE,
   FETCHED_NOTE,
   FETCHING_LIST_NOTE,
   FETCHING_NOTE,
-  FETCH_LIST_NOTE
+  UPDATED_ERROR_NOTE,
+  UPDATED_NOTE,
+  UPDATING_NOTE
 } from 'store/types/note';
 
 import {
   NoteAddActionTypesTs,
   NoteFetchActionTypesTs,
   NoteFetchListActionTypesTs,
-  NoteDeleteActionTypesTs
+  NoteDeleteActionTypesTs,
+  NoteUpdateActionTypesTs
 } from 'types/actions/note';
 
 import INoteState from 'interfaces/state/note';
@@ -96,7 +100,12 @@ const INIT_STATE_FETCH: INoteState['fetch'] = {
   fetching: false,
   fetched: false,
   error: '',
-  note: undefined
+  note: {
+    noteId: '',
+    userId: '',
+    createdAt: 0,
+    content: ''
+  }
 };
 
 const fetchNote = (
@@ -146,9 +155,41 @@ const deleteNote = (
   }
 };
 
+const INIT_STATE_UPDATE: INoteState['update'] = {
+  updated: false,
+  updating: false,
+  error: '',
+  id: ''
+};
+
+const updateNote = (
+  state = INIT_STATE_UPDATE,
+  action: NoteUpdateActionTypesTs
+): INoteState['update'] => {
+  switch (action.type) {
+    case UPDATED_ERROR_NOTE:
+      return { ...INIT_STATE_UPDATE, error: action.payload };
+
+    case UPDATED_NOTE:
+      return {
+        ...INIT_STATE_UPDATE,
+        id: action.payload.id || '',
+        updated:
+          action.payload.updated === undefined ? true : action.payload.updated
+      };
+
+    case UPDATING_NOTE:
+      return { ...INIT_STATE_UPDATE, updating: true };
+
+    default:
+      return state;
+  }
+};
+
 export default combineReducers<INoteState>({
   add: addNote,
   fetch: fetchNote,
   list: listNote,
-  delete: deleteNote
+  delete: deleteNote,
+  update: updateNote
 });

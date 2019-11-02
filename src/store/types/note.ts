@@ -17,3 +17,8 @@ export const DELETE_NOTE = '@note/DELETE';
 export const DELETED_ERROR_NOTE = '@note/DELETED_ERROR';
 export const DELETED_NOTE = '@note/DELETED';
 export const DELETING_NOTE = '@note/DELETING';
+
+export const UPDATE_NOTE = '@note/UPDATE';
+export const UPDATED_ERROR_NOTE = '@note/UPDATED_ERROR';
+export const UPDATED_NOTE = '@note/UPDATED';
+export const UPDATING_NOTE = '@note/UPDATING';

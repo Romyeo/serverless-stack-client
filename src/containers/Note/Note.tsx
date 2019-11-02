@@ -11,14 +11,16 @@ import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 
-import { addNote, fetchNote, deleteNote } from 'store/actions/note';
+import { fetchNote, deleteNote, updateNote } from 'store/actions/note';
 
 import {
   selectNoteDeleteError,
   selectNoteDeleting,
   selectNoteFetchedData,
   selectNoteFetchError,
-  selectNoteFetching
+  selectNoteFetching,
+  selectNoteUpdating,
+  selectNoteUpdateError
 } from 'selectors/note';
 
 import NotFound from 'components/NotFound/NotFound';
@@ -43,14 +45,23 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
   const [error, setError] = useState('');
   const [content, setContent] = useState('');
 
-  const { attachment, attachmentURL, content: noteContent } =
-    useSelector(selectNoteFetchedData) || {};
+  const {
+    attachment,
+    attachmentURL,
+    createdAt,
+    content: noteContent,
+    noteId,
+    userId
+  } = useSelector(selectNoteFetchedData);
 
   const fetching = useSelector(selectNoteFetching);
   const fetchError = useSelector(selectNoteFetchError);
 
   const deleteError = useSelector(selectNoteDeleteError);
   const deleting = useSelector(selectNoteDeleting);
+
+  const updateError = useSelector(selectNoteUpdateError);
+  const updating = useSelector(selectNoteUpdating);
 
   useEffect(() => {
     dispatch(fetchNote(id));
@@ -68,6 +79,19 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
     event.preventDefault();
     setError('');
 
+    if (!content || !noteId || !createdAt || !userId) {
+      setError(
+        `
+          Missing fields
+          ${!content && 'Content,'}
+          ${!noteId && 'Note ID,'}
+          ${!userId && 'User ID,'}
+          ${!createdAt && 'Created time,'}
+        `
+      );
+      return;
+    }
+
     if (
       file.current &&
       file.current.size > config.attachment.MAX_ATTACHMENT_SIZE
@@ -78,7 +102,17 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
       return;
     }
 
-    dispatch(addNote(content, file.current));
+    if (content === noteContent && !file.current) {
+      setError(`Please try to change something before updating`);
+      return;
+    }
+
+    dispatch(
+      updateNote(
+        { attachment, content, createdAt, noteId, userId },
+        file.current
+      )
+    );
   };
 
   const handleDelete = (event: MouseEvent<HTMLButtonElement>) => {
@@ -117,14 +151,16 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
     );
   }
 
-  const buttonDisabled = deleting;
+  const disabled = deleting || updating;
 
   return (
     <Row className="justify-content-center">
       <Col lg={7}>
         <Form onSubmit={handleSubmit}>
-          {(error || deleteError) && (
-            <Alert variant="danger">{error || deleteError}</Alert>
+          {(error || deleteError || updateError) && (
+            <Alert variant="danger">
+              {error || deleteError || updateError}
+            </Alert>
           )}
 
           <Form.Group controlId="content">
@@ -134,7 +170,7 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
               placeholder="Scratch your notes here"
               onChange={handleChangeContent}
               value={content}
-              disabled={buttonDisabled}
+              disabled={disabled}
               rows="10"
               required
             />
@@ -163,24 +199,19 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
             <Form.Control
               name="attachment"
               type="file"
-              disabled={buttonDisabled}
+              disabled={disabled}
               onChange={handleFileChange}
             />
           </Form.Group>
 
-          <Button
-            variant="primary"
-            type="submit"
-            disabled={buttonDisabled}
-            block
-          >
-            Update note
+          <Button variant="primary" type="submit" disabled={disabled} block>
+            {updating ? 'Updating scratch note...' : 'Update note'}
           </Button>
 
           <Button
             variant="outline-danger"
             onClick={handleDelete}
-            disabled={buttonDisabled}
+            disabled={disabled}
             block
           >
             {deleting ? 'Deleting scratch note...' : 'Delete note'}

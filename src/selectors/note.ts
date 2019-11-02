@@ -97,3 +97,23 @@ export const selectNoteDeleteError = createSelector(
   selectNoteDelete,
   del => del.error
 );
+
+export const selectNoteUpdate = createSelector(
+  selectNote,
+  note => note.update
+);
+
+export const selectNoteUpdating = createSelector(
+  selectNoteUpdate,
+  update => update.updating
+);
+
+export const selectNoteUpdated = createSelector(
+  selectNoteUpdate,
+  update => update.updated
+);
+
+export const selectNoteUpdateError = createSelector(
+  selectNoteUpdate,
+  update => update.error
+);
