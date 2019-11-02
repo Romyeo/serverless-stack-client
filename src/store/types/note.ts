@@ -12,3 +12,8 @@ export const FETCH_NOTE = '@note/FETCH';
 export const FETCHED_ERROR_NOTE = '@note/FETCHED_ERROR';
 export const FETCHED_NOTE = '@note/FETCHED';
 export const FETCHING_NOTE = '@note/FETCHING';
+
+export const DELETE_NOTE = '@note/DELETE';
+export const DELETED_ERROR_NOTE = '@note/DELETED_ERROR';
+export const DELETED_NOTE = '@note/DELETED';
+export const DELETING_NOTE = '@note/DELETING';

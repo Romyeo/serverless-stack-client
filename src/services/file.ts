@@ -18,3 +18,7 @@ export const fileGet = async (
 ): Promise<object | string | undefined> => {
   return await Storage.vault.get(key);
 };
+
+export const fileDelete = async (key: string): Promise<void> => {
+  await Storage.vault.remove(key);
+};

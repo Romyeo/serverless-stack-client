@@ -3,6 +3,10 @@ import {
   ADDED_ERROR_NOTE,
   ADDED_NOTE,
   ADDING_NOTE,
+  DELETE_NOTE,
+  DELETED_ERROR_NOTE,
+  DELETED_NOTE,
+  DELETING_NOTE,
   FETCH_LIST_NOTE,
   FETCH_NOTE,
   FETCHED_ERROR_LIST_NOTE,
@@ -27,6 +31,7 @@ export interface IAddedErrorNoteAction {
 
 export interface IAddedNoteAction {
   type: typeof ADDED_NOTE;
+  payload?: boolean;
 }
 
 export interface IAddingNoteAction {
@@ -35,6 +40,7 @@ export interface IAddingNoteAction {
 
 export interface IFetchListNoteAction {
   type: typeof FETCH_LIST_NOTE;
+  payload?: boolean;
 }
 
 export interface IFetchedErrorListNoteAction {
@@ -44,7 +50,7 @@ export interface IFetchedErrorListNoteAction {
 
 export interface IFetchedListNoteAction {
   type: typeof FETCHED_LIST_NOTE;
-  payload: INote[];
+  payload: { fetched?: boolean; notes: INote[] };
 }
 
 export interface IFetchingListNoteAction {
@@ -65,4 +71,23 @@ export interface IFetchedNoteAction {
 }
 export interface IFetchingNoteAction {
   type: typeof FETCHING_NOTE;
+}
+
+export interface IDeleteNoteAction {
+  type: typeof DELETE_NOTE;
+  payload: { id: string; fileName?: string };
+}
+
+export interface IDeletedErrorNoteAction {
+  type: typeof DELETED_ERROR_NOTE;
+  payload: string;
+}
+
+export interface IDeletedNoteAction {
+  type: typeof DELETED_NOTE;
+  payload?: boolean;
+}
+
+export interface IDeletingNoteAction {
+  type: typeof DELETING_NOTE;
 }

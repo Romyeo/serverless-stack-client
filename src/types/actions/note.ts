@@ -3,6 +3,10 @@ import {
   IAddedNoteAction,
   IAddingNoteAction,
   IAddNoteAction,
+  IDeletedErrorNoteAction,
+  IDeletedNoteAction,
+  IDeleteNoteAction,
+  IDeletingNoteAction,
   IFetchedErrorListNoteAction,
   IFetchedErrorNoteAction,
   IFetchedListNoteAction,
@@ -30,3 +34,9 @@ export type NoteFetchActionTypesTs =
   | IFetchedNoteAction
   | IFetchingNoteAction
   | IFetchNoteAction;
+
+export type NoteDeleteActionTypesTs =
+  | IDeleteNoteAction
+  | IDeletedErrorNoteAction
+  | IDeletedNoteAction
+  | IDeletingNoteAction;
