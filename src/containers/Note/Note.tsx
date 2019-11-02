@@ -4,18 +4,21 @@ import React, {
   ChangeEvent,
   FormEvent,
   useState,
-  useEffect
+  useEffect,
+  MouseEvent
 } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, Row, Spinner } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 
-import { addNote, fetchNote } from 'store/actions/note';
+import { addNote, fetchNote, deleteNote } from 'store/actions/note';
 
 import {
+  selectNoteDeleteError,
+  selectNoteDeleting,
   selectNoteFetchedData,
-  selectNoteFetching,
-  selectNoteFetchError
+  selectNoteFetchError,
+  selectNoteFetching
 } from 'selectors/note';
 
 import NotFound from 'components/NotFound/NotFound';
@@ -28,6 +31,10 @@ interface RouteInfo {
 
 const MAX_SIZE = config.attachment.MAX_ATTACHMENT_SIZE / 1000000;
 
+const formatFilename = (str: string) => {
+  return str.replace(/^\w+-/, '');
+};
+
 const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
   const { id } = match.params;
 
@@ -36,17 +43,22 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
   const [error, setError] = useState('');
   const [content, setContent] = useState('');
 
-  const note = useSelector(selectNoteFetchedData);
-  const fetchingNote = useSelector(selectNoteFetching);
-  const fetchNoteError = useSelector(selectNoteFetchError);
+  const { attachment, attachmentURL, content: noteContent } =
+    useSelector(selectNoteFetchedData) || {};
+
+  const fetching = useSelector(selectNoteFetching);
+  const fetchError = useSelector(selectNoteFetchError);
+
+  const deleteError = useSelector(selectNoteDeleteError);
+  const deleting = useSelector(selectNoteDeleting);
 
   useEffect(() => {
     dispatch(fetchNote(id));
   }, [dispatch, id]);
 
   useEffect(() => {
-    if (note) setContent(note.content);
-  }, [note]);
+    if (noteContent) setContent(noteContent);
+  }, [noteContent]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     file.current = event.target.files![0];
@@ -69,19 +81,29 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
     dispatch(addNote(content, file.current));
   };
 
+  const handleDelete = (event: MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+
+    setError('');
+
+    const confirmed = window.confirm(
+      'Are you sure you want to delete this scratch?'
+    );
+
+    if (!confirmed) return;
+
+    dispatch(deleteNote(id, attachment));
+  };
+
   const handleChangeContent = (e: ChangeEvent<HTMLInputElement>) => {
     setContent(e.target.value);
   };
 
-  const formatFilename = (str: string) => {
-    return str.replace(/^\w+-/, '');
-  };
-
-  if (fetchNoteError) {
+  if (fetchError) {
     return <NotFound />;
   }
 
-  if (fetchingNote) {
+  if (fetching) {
     return (
       <Row className="justify-content-center align-items-center">
         <Spinner
@@ -95,34 +117,39 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
     );
   }
 
+  const buttonDisabled = deleting;
+
   return (
     <Row className="justify-content-center">
       <Col lg={7}>
         <Form onSubmit={handleSubmit}>
-          {error && <Alert variant="danger">{error}</Alert>}
+          {(error || deleteError) && (
+            <Alert variant="danger">{error || deleteError}</Alert>
+          )}
 
           <Form.Group controlId="content">
             <Form.Control
               name="content"
               as="textarea"
               placeholder="Scratch your notes here"
-              rows="10"
               onChange={handleChangeContent}
               value={content}
+              disabled={buttonDisabled}
+              rows="10"
               required
             />
           </Form.Group>
 
-          {note && note.attachmentURL && note.attachment && (
+          {attachmentURL && attachment && (
             <div>
               <h6>
                 Attachment -{' '}
                 <a
-                  href={note.attachmentURL}
+                  href={attachmentURL}
                   rel="noopener noreferrer"
                   target="_blank"
                 >
-                  {formatFilename(note.attachment)}
+                  {formatFilename(attachment)}
                 </a>
               </h6>
             </div>
@@ -134,18 +161,29 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
               it's smaller than 5MB
             </Form.Text>
             <Form.Control
-              onChange={handleFileChange}
               name="attachment"
               type="file"
+              disabled={buttonDisabled}
+              onChange={handleFileChange}
             />
           </Form.Group>
 
-          <Button variant="primary" type="submit" block>
+          <Button
+            variant="primary"
+            type="submit"
+            disabled={buttonDisabled}
+            block
+          >
             Update note
           </Button>
 
-          <Button variant="outline-danger" block>
-            Delete note
+          <Button
+            variant="outline-danger"
+            onClick={handleDelete}
+            disabled={buttonDisabled}
+            block
+          >
+            {deleting ? 'Deleting scratch note...' : 'Delete note'}
           </Button>
         </Form>
       </Col>

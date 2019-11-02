@@ -38,6 +38,11 @@ export const selectNoteListFetched = createSelector(
   list => list.fetched
 );
 
+export const selectNoteListInitial = createSelector(
+  selectNoteList,
+  list => list.initial
+);
+
 export const selectNoteListFetchedData = createSelector(
   selectNoteList,
   list => list.notes
@@ -71,4 +76,24 @@ export const selectNoteFetchedData = createSelector(
 export const selectNoteFetchError = createSelector(
   selectNoteFetch,
   fetch => fetch.error
+);
+
+export const selectNoteDelete = createSelector(
+  selectNote,
+  note => note.delete
+);
+
+export const selectNoteDeleting = createSelector(
+  selectNoteDelete,
+  del => del.deleting
+);
+
+export const selectNoteDeleted = createSelector(
+  selectNoteDelete,
+  del => del.deleted
+);
+
+export const selectNoteDeleteError = createSelector(
+  selectNoteDelete,
+  del => del.error
 );

@@ -13,6 +13,7 @@ export default interface INoteState {
     error: string;
     // TODO: Change this to data: D[] or extend IDataState, if going to be generic
     notes: INote[];
+    initial: boolean;
   };
   fetch: {
     fetching: boolean;
@@ -20,5 +21,10 @@ export default interface INoteState {
     error: string;
     // TODO: Change this to data: D or extends IDataState, if going to be generic
     note?: INote;
+  };
+  delete: {
+    deleting: boolean;
+    deleted: boolean;
+    error: string;
   };
 }

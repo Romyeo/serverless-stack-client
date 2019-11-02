@@ -1,18 +1,14 @@
 import React from 'react';
-import { createStore, applyMiddleware } from 'redux';
 import { Provider } from 'react-redux';
-import createSagaMiddleware from 'redux-saga';
-import { composeWithDevTools } from 'redux-devtools-extension';
 import ReactDOM from 'react-dom';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { ConnectedRouter as Router } from 'connected-react-router';
 import Amplify from 'aws-amplify';
+
+import configureStore, { history } from 'store';
 
 import App from 'App';
 
 import config from 'config';
-
-import sagas from 'store/sagas';
-import reducers from 'store/reducers';
 
 import { unregister as serviceWorkerUnregister } from 'serviceWorker';
 
@@ -42,15 +38,11 @@ Amplify.configure({
   }
 });
 
-const sagaMiddleware = createSagaMiddleware();
-const enhancer = composeWithDevTools(applyMiddleware(sagaMiddleware));
-const store = createStore(reducers, enhancer);
-
-sagaMiddleware.run(sagas);
+const store = configureStore();
 
 const app = (
   <Provider store={store}>
-    <Router>
+    <Router history={history}>
       <App />
     </Router>
   </Provider>

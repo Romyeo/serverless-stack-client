@@ -5,6 +5,10 @@ import {
   ADDED_ERROR_NOTE,
   ADDED_NOTE,
   ADDING_NOTE,
+  DELETE_NOTE,
+  DELETED_ERROR_NOTE,
+  DELETED_NOTE,
+  DELETING_NOTE,
   FETCH_LIST_NOTE,
   FETCH_NOTE,
   FETCHED_ERROR_LIST_NOTE,
@@ -16,18 +20,22 @@ import {
 } from 'store/types/note';
 
 import {
-  IAddNoteAction,
-  IAddedNoteAction,
   IAddedErrorNoteAction,
+  IAddedNoteAction,
   IAddingNoteAction,
-  IFetchListNoteAction,
+  IAddNoteAction,
   IFetchedErrorListNoteAction,
-  IFetchedListNoteAction,
-  IFetchingListNoteAction,
-  IFetchNoteAction,
   IFetchedErrorNoteAction,
+  IFetchedListNoteAction,
   IFetchedNoteAction,
-  IFetchingNoteAction
+  IFetchingListNoteAction,
+  IFetchingNoteAction,
+  IFetchListNoteAction,
+  IFetchNoteAction,
+  IDeletedErrorNoteAction,
+  IDeletedNoteAction,
+  IDeleteNoteAction,
+  IDeletingNoteAction
 } from 'interfaces/actions/note';
 
 export const addNote = (note: string, attachment?: File): IAddNoteAction => {
@@ -37,9 +45,10 @@ export const addNote = (note: string, attachment?: File): IAddNoteAction => {
   };
 };
 
-export const addedNote = (): IAddedNoteAction => {
+export const addedNote = (added?: boolean): IAddedNoteAction => {
   return {
-    type: ADDED_NOTE
+    type: ADDED_NOTE,
+    payload: added
   };
 };
 
@@ -56,9 +65,10 @@ export const addingNote = (): IAddingNoteAction => {
   };
 };
 
-export const fetchListNote = (): IFetchListNoteAction => {
+export const fetchListNote = (initial?: boolean): IFetchListNoteAction => {
   return {
-    type: FETCH_LIST_NOTE
+    type: FETCH_LIST_NOTE,
+    payload: initial
   };
 };
 
@@ -71,10 +81,13 @@ export const fetchedErrorListNote = (
   };
 };
 
-export const fetchedListNote = (notes: INote[]): IFetchedListNoteAction => {
+export const fetchedListNote = (
+  notes: INote[],
+  fetched?: boolean
+): IFetchedListNoteAction => {
   return {
     type: FETCHED_LIST_NOTE,
-    payload: notes
+    payload: { notes, fetched }
   };
 };
 
@@ -108,5 +121,38 @@ export const fetchedNote = (note: INote): IFetchedNoteAction => {
 export const fetchingNote = (): IFetchingNoteAction => {
   return {
     type: FETCHING_NOTE
+  };
+};
+
+export const deleteNote = (
+  id: string,
+  fileName?: string
+): IDeleteNoteAction => {
+  return {
+    type: DELETE_NOTE,
+    payload: {
+      id,
+      fileName
+    }
+  };
+};
+
+export const deletedErrorNote = (error: string): IDeletedErrorNoteAction => {
+  return {
+    type: DELETED_ERROR_NOTE,
+    payload: error
+  };
+};
+
+export const deletedNote = (deleted?: boolean): IDeletedNoteAction => {
+  return {
+    type: DELETED_NOTE,
+    payload: deleted
+  };
+};
+
+export const deletingNote = (): IDeletingNoteAction => {
+  return {
+    type: DELETING_NOTE
   };
 };

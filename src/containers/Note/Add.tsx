@@ -1,25 +1,14 @@
-import React, {
-  FC,
-  useRef,
-  ChangeEvent,
-  FormEvent,
-  useState,
-  useEffect
-} from 'react';
+import React, { FC, useRef, ChangeEvent, FormEvent, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { Alert, Button, Col, Form, Row } from 'react-bootstrap';
 import { RouteComponentProps } from 'react-router';
 
-import { addNote, fetchListNote } from 'store/actions/note';
+import { addNote } from 'store/actions/note';
 
 import useFormFields from 'hooks/formFields';
 
 import config from 'config';
-import {
-  selectNoteAdded,
-  selectNoteAdding,
-  selectNoteAddError
-} from 'selectors/note';
+import { selectNoteAdding, selectNoteAddError } from 'selectors/note';
 
 interface IFormFields {
   content: string;
@@ -27,9 +16,7 @@ interface IFormFields {
 
 const MAX_SIZE = config.attachment.MAX_ATTACHMENT_SIZE / 1000000;
 
-const NoteAdd: FC<RouteComponentProps> = ({ history }) => {
-  const { push } = history;
-
+const NoteAdd: FC<RouteComponentProps> = () => {
   const dispatch = useDispatch();
   const file = useRef<File>();
   const [error, setError] = useState('');
@@ -37,16 +24,8 @@ const NoteAdd: FC<RouteComponentProps> = ({ history }) => {
     content: ''
   });
 
-  const added = useSelector(selectNoteAdded);
   const adding = useSelector(selectNoteAdding);
   const addError = useSelector(selectNoteAddError);
-
-  useEffect(() => {
-    if (added) {
-      dispatch(fetchListNote());
-      push('/');
-    }
-  }, [dispatch, added, push]);
 
   const handleFileChange = (event: ChangeEvent<HTMLInputElement>) => {
     file.current = event.target.files![0];

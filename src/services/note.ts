@@ -1,6 +1,6 @@
 import { API } from 'aws-amplify';
 
-import { fileUpload, fileGet } from 'services/file';
+import { fileUpload, fileGet, fileDelete } from 'services/file';
 
 import INote from 'interfaces/general/note';
 
@@ -34,4 +34,15 @@ export const fetchNote = async (id: string): Promise<INote> => {
   }
 
   return data;
+};
+
+export const deleteNote = async (
+  id: string,
+  fileName?: string
+): Promise<void> => {
+  if (fileName) {
+    await fileDelete(fileName);
+  }
+
+  await API.del(ENDPOINT, `/notes/${id}`, null);
 };

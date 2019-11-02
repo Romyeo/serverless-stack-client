@@ -2,18 +2,23 @@ import {
   ADDED_ERROR_NOTE,
   ADDED_NOTE,
   ADDING_NOTE,
+  DELETED_ERROR_NOTE,
+  DELETED_NOTE,
+  DELETING_NOTE,
   FETCHED_ERROR_LIST_NOTE,
   FETCHED_ERROR_NOTE,
   FETCHED_LIST_NOTE,
   FETCHED_NOTE,
   FETCHING_LIST_NOTE,
-  FETCHING_NOTE
+  FETCHING_NOTE,
+  FETCH_LIST_NOTE
 } from 'store/types/note';
 
 import {
   NoteAddActionTypesTs,
   NoteFetchActionTypesTs,
-  NoteFetchListActionTypesTs
+  NoteFetchListActionTypesTs,
+  NoteDeleteActionTypesTs
 } from 'types/actions/note';
 
 import INoteState from 'interfaces/state/note';
@@ -25,13 +30,16 @@ const INIT_STATE_ADD: INoteState['add'] = {
   error: ''
 };
 
-const add = (
+const addNote = (
   state = INIT_STATE_ADD,
   action: NoteAddActionTypesTs
 ): INoteState['add'] => {
   switch (action.type) {
     case ADDED_NOTE:
-      return { ...INIT_STATE_ADD, added: true };
+      return {
+        ...INIT_STATE_ADD,
+        added: action.payload === undefined ? true : action.payload
+      };
 
     case ADDED_ERROR_NOTE:
       return { ...INIT_STATE_ADD, error: action.payload };
@@ -48,22 +56,36 @@ const INIT_STATE_LIST: INoteState['list'] = {
   fetching: false,
   fetched: false,
   error: '',
+  initial: false,
   notes: []
 };
 
-const list = (
+const listNote = (
   state = INIT_STATE_LIST,
   action: NoteFetchListActionTypesTs
 ): INoteState['list'] => {
   switch (action.type) {
+    case FETCH_LIST_NOTE:
+      return { ...INIT_STATE_LIST, initial: true };
+
     case FETCHED_ERROR_LIST_NOTE:
-      return { ...INIT_STATE_LIST, error: action.payload };
+      return {
+        ...INIT_STATE_LIST,
+        initial: state.initial,
+        error: action.payload
+      };
 
     case FETCHED_LIST_NOTE:
-      return { ...INIT_STATE_LIST, fetched: true, notes: action.payload };
+      return {
+        ...INIT_STATE_LIST,
+        initial: state.initial,
+        fetched:
+          action.payload.fetched === undefined ? true : action.payload.fetched,
+        notes: action.payload.notes
+      };
 
     case FETCHING_LIST_NOTE:
-      return { ...INIT_STATE_LIST, fetching: true };
+      return { ...INIT_STATE_LIST, initial: state.initial, fetching: true };
 
     default:
       return state;
@@ -77,7 +99,7 @@ const INIT_STATE_FETCH: INoteState['fetch'] = {
   note: undefined
 };
 
-const fetch = (
+const fetchNote = (
   state = INIT_STATE_FETCH,
   action: NoteFetchActionTypesTs
 ): INoteState['fetch'] => {
@@ -96,8 +118,37 @@ const fetch = (
   }
 };
 
+const INIT_STATE_DELETE = {
+  deleting: false,
+  deleted: false,
+  error: ''
+};
+
+const deleteNote = (
+  state = INIT_STATE_DELETE,
+  action: NoteDeleteActionTypesTs
+): INoteState['delete'] => {
+  switch (action.type) {
+    case DELETED_ERROR_NOTE:
+      return { ...INIT_STATE_DELETE, error: action.payload };
+
+    case DELETED_NOTE:
+      return {
+        ...INIT_STATE_DELETE,
+        deleted: action.payload === undefined ? true : action.payload
+      };
+
+    case DELETING_NOTE:
+      return { ...INIT_STATE_DELETE, deleting: true };
+
+    default:
+      return state;
+  }
+};
+
 export default combineReducers<INoteState>({
-  add,
-  list,
-  fetch
+  add: addNote,
+  fetch: fetchNote,
+  list: listNote,
+  delete: deleteNote
 });

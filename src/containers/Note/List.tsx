@@ -8,7 +8,9 @@ import { fetchListNote } from 'store/actions/note';
 import {
   selectNoteListFetching,
   selectNoteListError,
-  selectNoteListFetchedData
+  selectNoteListFetchedData,
+  selectNoteListFetched,
+  selectNoteListInitial
 } from 'selectors/note';
 
 import './styles/List.css';
@@ -19,15 +21,17 @@ const NoteList: FC<RouteComponentProps> = ({ history }) => {
   const { push } = history;
 
   const dispatch = useDispatch();
+  const initial = useSelector(selectNoteListInitial);
+  const fetched = useSelector(selectNoteListFetched);
   const fetching = useSelector(selectNoteListFetching);
   const error = useSelector(selectNoteListError);
   const notes = useSelector(selectNoteListFetchedData);
 
   useEffect(() => {
-    if (!notes.length) {
-      dispatch(fetchListNote());
+    if (!initial) {
+      dispatch(fetchListNote(true));
     }
-  }, [dispatch, notes]);
+  }, [dispatch, initial]);
 
   const handleAddNote = () => {
     push('/notes/add');
@@ -55,7 +59,7 @@ const NoteList: FC<RouteComponentProps> = ({ history }) => {
     ];
   }
 
-  if (notes.length && !fetching && !error) {
+  if (fetched && !fetching && !error) {
     items = notes.map(note => {
       const { noteId, content, createdAt } = note;
       const noteLines = content.split('\n');
