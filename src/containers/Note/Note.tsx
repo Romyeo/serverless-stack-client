@@ -44,6 +44,7 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
   const file = useRef<File>();
   const [error, setError] = useState('');
   const [content, setContent] = useState('');
+  const [validated, setValidated] = useState(false);
 
   const {
     attachment,
@@ -78,6 +79,9 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
+
+    if (!validated) setValidated(true);
+    if (!event.currentTarget.checkValidity()) return;
 
     if (!content || !noteId || !createdAt || !userId) {
       setError(
@@ -156,7 +160,7 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
   return (
     <Row className="justify-content-center">
       <Col lg={7}>
-        <Form onSubmit={handleSubmit}>
+        <Form validated={validated} onSubmit={handleSubmit} noValidate>
           {(error || deleteError || updateError) && (
             <Alert variant="danger">
               {error || deleteError || updateError}
@@ -174,6 +178,9 @@ const Note: FC<RouteComponentProps<RouteInfo>> = ({ match }) => {
               rows="10"
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Please make sure that your scratch note is not empty.
+            </Form.Control.Feedback>
           </Form.Group>
 
           {attachmentURL && attachment && (

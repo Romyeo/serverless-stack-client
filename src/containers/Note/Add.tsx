@@ -19,6 +19,8 @@ const MAX_SIZE = config.attachment.MAX_ATTACHMENT_SIZE / 1000000;
 const NoteAdd: FC<RouteComponentProps> = () => {
   const dispatch = useDispatch();
   const file = useRef<File>();
+
+  const [validated, setValidated] = useState(false);
   const [error, setError] = useState('');
   const [fields, handleFieldChange] = useFormFields<IFormFields>({
     content: ''
@@ -34,6 +36,9 @@ const NoteAdd: FC<RouteComponentProps> = () => {
   const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     setError('');
+
+    if (!validated) setValidated(true);
+    if (!event.currentTarget.checkValidity()) return;
 
     if (
       file.current &&
@@ -51,7 +56,7 @@ const NoteAdd: FC<RouteComponentProps> = () => {
   return (
     <Row className="justify-content-center">
       <Col lg={7}>
-        <Form onSubmit={handleSubmit}>
+        <Form validated={validated} onSubmit={handleSubmit} noValidate>
           {(error || addError) && (
             <Alert variant="danger">{error || addError}</Alert>
           )}
@@ -67,7 +72,11 @@ const NoteAdd: FC<RouteComponentProps> = () => {
               value={fields.content}
               required
             />
+            <Form.Control.Feedback type="invalid">
+              Make sure that your scratch note is not empty.
+            </Form.Control.Feedback>
           </Form.Group>
+
           <Form.Group controlId="attachment">
             <Form.Text style={{ marginBottom: 15 }}>
               (Optional) You can upload an attachment to your scratch, make sure
@@ -80,6 +89,7 @@ const NoteAdd: FC<RouteComponentProps> = () => {
               type="file"
             />
           </Form.Group>
+
           <Button variant="primary" type="submit" disabled={adding} block>
             {adding ? 'Adding note...' : 'Add note'}
           </Button>
