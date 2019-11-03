@@ -15,5 +15,8 @@ export default {
   },
   attachment: {
     MAX_ATTACHMENT_SIZE: 5000000
+  },
+  stripe: {
+    STRIPE_KEY: 'pk_test_l5nXBG6h29awK9fgBJcuycKZ00YodDm2HB'
   }
 };

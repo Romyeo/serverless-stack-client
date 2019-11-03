@@ -36,10 +36,7 @@ export const fetchNote = async (id: string): Promise<INote> => {
   return data;
 };
 
-export const deleteNote = async (
-  id: string,
-  fileName?: string
-): Promise<void> => {
+export const deleteNote = async (id: string, fileName?: string) => {
   if (fileName) {
     await fileDelete(fileName);
   }
@@ -60,5 +57,14 @@ export const updateNote = async (
 
   return await API.put(ENDPOINT, `/notes/${note.noteId}`, {
     body: { ...note, attachment: fileKey }
+  });
+};
+
+export const billNote = async (storage: number, source: string) => {
+  return await API.post(ENDPOINT, `/billing`, {
+    body: {
+      storage,
+      source
+    }
   });
 };
