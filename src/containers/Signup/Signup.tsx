@@ -46,6 +46,7 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
   const signedUpError = useSelector(selectAuthSignedUpError);
   const signingUp = useSelector(selectAuthSigningUp);
 
+  const [validated, setValidated] = useState(false);
   const [passStr, setPassStr] = useState(0);
   const [error, setError] = useState('');
 
@@ -68,7 +69,11 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
 
   const handleSignUpSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
+    if (!validated) setValidated(true);
+
     setError('');
+
+    if (!event.currentTarget.checkValidity()) return;
 
     let error = '';
 
@@ -97,7 +102,7 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
   };
 
   const renderSignUp = (
-    <Form onSubmit={handleSignUpSubmit}>
+    <Form validated={validated} onSubmit={handleSignUpSubmit} noValidate>
       {(error || signedUpError) && !signingUp && !signedUp && (
         <Alert variant="danger">{error || signedUpError}</Alert>
       )}
@@ -112,6 +117,9 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
           placeholder="Enter your email address"
           required
         />
+        <Form.Control.Feedback type="invalid">
+          Please provide a valid email.
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group controlId="password">
@@ -125,6 +133,9 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
           required
         />
         <ProgressBar min={0} max={4} now={passStr} />
+        <Form.Control.Feedback type="invalid">
+          Please provide a valid password.
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Form.Group controlId="confirmPassword">
@@ -137,6 +148,9 @@ const Signup: FC<RouteComponentProps> = ({ history }) => {
           placeholder="Re-enter your password for confirmation"
           required
         />
+        <Form.Control.Feedback type="invalid">
+          Please make sure that confirm password matches your password.
+        </Form.Control.Feedback>
       </Form.Group>
 
       <Button variant="primary" type="submit" disabled={signingUp} block>
