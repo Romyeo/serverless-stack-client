@@ -1,3 +1,4 @@
+import Settings from 'containers/Settings/Settings';
 import Signin from 'containers/Signin/Signin';
 import Signout from 'containers/Signout/Signout';
 import Signup from 'containers/Signup/Signup';
@@ -31,6 +32,11 @@ export const authenticatedRoutes: IRoute[] = [
     component: Note,
     name: 'Note',
     hidden: true
+  },
+  {
+    path: '/settings',
+    component: Settings,
+    name: 'Settings'
   },
   {
     path: '/signout',

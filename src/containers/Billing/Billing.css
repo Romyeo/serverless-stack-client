@@ -1,0 +1,28 @@
+.StripeElement.StripeElement--focus {
+  color:#495057;
+  background-color:#fff;
+  border-color:#80bdff;
+  outline: 0;
+  box-shadow: 0 0 0 .2rem rgba(0,123,255,.25);
+}
+
+.StripeElement.StripeElement--invalid,
+.stripe-element-container.validated.incomplete .StripeElement {
+  border-color: #dc3545;
+}
+
+.StripeElement.StripeElement--focus.StripeElement--invalid,
+.StripeElement.StripeElement--focus.StripeElement--invalid:focus,
+.stripe-element-container.validated.incomplete .StripeElement.StripeElement--focus,
+.stripe-element-container.validated.incomplete .StripeElement.StripeElement--focus:focus {
+  box-shadow: 0 0 0 0.2rem rgba(220,53,69,.25);
+}
+
+.stripe-element-container.validated .StripeElement.StripeElement--complete {
+  border-color: #28a745;
+}
+
+.stripe-element-container.validated .StripeElement.StripeElement--focus.StripeElement--complete,
+.stripe-element-container.validated .StripeElement.StripeElement--focus.StripeElement--complete:focus {
+  box-shadow: 0 0 0 .2rem rgba(40,167,69,.25);
+}

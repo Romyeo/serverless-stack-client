@@ -27,7 +27,7 @@ const App: FC = () => {
   }, [dispatch]);
 
   useEffect(() => {
-    signedIn ? setRoutes(authenticatedRoutes) : setRoutes(defaultRoutes);
+    setRoutes(signedIn ? authenticatedRoutes : defaultRoutes);
   }, [signedIn]);
 
   return (
