@@ -1,22 +1,50 @@
-export default {
+const dev = {
   s3: {
     REGION: 'us-east-2',
-    BUCKET: 'ac-note-attachments'
+    BUCKET: 'ac-notes-app-dev-api-dev-attachmentsbucket-19crdvybobo4p'
   },
   apiGateway: {
     REGION: 'us-east-2',
-    URL: 'https://94k23m8h62.execute-api.us-east-2.amazonaws.com/prod'
+    URL: 'https://mg8etbpkc1.execute-api.us-east-2.amazonaws.com/dev'
   },
   cognito: {
     REGION: 'us-east-2',
-    USER_POOL_ID: 'us-east-2_J083C4nPR',
-    APP_CLIENT_ID: '4pdjqm1ngldf5hcv5ao86gjlq7',
-    IDENTITY_POOL_ID: 'us-east-2:c5c75644-1773-42c8-9866-0b1a793d1a36'
-  },
-  attachment: {
-    MAX_ATTACHMENT_SIZE: 5000000
+    USER_POOL_ID: 'us-east-2_hgx2We5tj',
+    APP_CLIENT_ID: '20oi7k4bhclvpp0evik1eble41',
+    IDENTITY_POOL_ID: 'us-east-2:5c41d934-94bb-4f17-8a71-83b138b994da'
   },
   stripe: {
     STRIPE_KEY: 'pk_test_l5nXBG6h29awK9fgBJcuycKZ00YodDm2HB'
   }
+};
+
+const prod = {
+  s3: {
+    REGION: 'us-east-2',
+    BUCKET: 'ac-notes-app-dev-api-prod-attachmentsbucket-mlsh655qjaoa'
+  },
+  apiGateway: {
+    REGION: 'us-east-2',
+    URL: 'https://jo8iuhjho5.execute-api.us-east-2.amazonaws.com/prod'
+  },
+  cognito: {
+    REGION: 'us-east-2',
+    USER_POOL_ID: 'us-east-2_DVeMhsjGU',
+    APP_CLIENT_ID: '5e72rmop7mruj6f9m21juh1pia',
+    IDENTITY_POOL_ID: 'us-east-2:e9598d84-24fe-4826-b172-81a3a0d0cbc5'
+  },
+  stripe: {
+    STRIPE_KEY: 'pk_test_l5nXBG6h29awK9fgBJcuycKZ00YodDm2HB'
+  }
+};
+
+// Default to dev if not set
+const config = process.env.REACT_APP_STAGE === 'prod' ? prod : dev;
+
+export default {
+  // Add common config values here
+  attachment: {
+    MAX_ATTACHMENT_SIZE: 5000000
+  },
+  ...config
 };
